@@ -30,6 +30,7 @@ public:
     friend ostream& operator<< <> (std::ostream&, const AOvector&);
 
 
+
 };
 
 #endif //AOVECTOR_AOVECTOR_H

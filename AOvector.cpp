@@ -86,4 +86,95 @@ ostream& operator<<(std::ostream& os, const AOvector<T>& obj) // ope
     }
     return os << endl;
 }
+template<typename T>
+void AOvector<T>:: erase(iterator itr) // 3 4 5 6  // 5  // 3 4 6 5
+{
+    int i, j, found=0;
+    for(i=0 ; i < sz ; i++)
+    {
+        if(data[i] == *itr)
+        {
+            found = 1;
+            for(int z = 0 , c = 0 ; z < sz ; z++ )
+            {
+                if(z == i)
+                {
+                    T elem = data[i];
+                    continue;
+                }
+                else if ( z != i)
+                {
+                    data[c] = data[z];
+                    c++;
+                }
+            }
+            break;
+        }
+    }
+    if(found==0)
+        throw invalid_argument("\"An error has occured, index out of range.\"");
+    else
+    {
+        pop_back();
+    }
+}
+
+template<typename T>
+void AOvector<T>::erase(iterator itr1 , iterator itr2)  // 3 4 5 6 7  // 3  // 2
+{
+
+    int firstindx ,secondindx , found = 0,newsize=1;
+    for(int i = 0 ; i < sz ; i++)
+    {
+        if(*itr1 == *itr2)
+        {
+            found = 0;
+            break;
+        }
+        if(data[i] == *itr1)
+        {
+            firstindx = i;
+            found = 1;
+        }
+        else if (data[i] == *itr2)
+        {
+            secondindx = i;
+            found = 1;
+        }
+
+    }
+    for(int i = firstindx ; i <= secondindx ;i++) {
+        newsize += 1;
+    }
+    if (found == 0 || firstindx==secondindx )
+    {
+        throw invalid_argument("\"An error has occured");
+    }else
+    {
+        T* newdata = new T[capacity];
+        copy(data + firstindx, data + secondindx+1 , newdata);
+        for(int i = 0 , x = 0; i < sz ; i++)
+        {
+            bool founded = 0;
+            for(int z = 0 ; z < newsize  ; z++)
+            {
+                if (data[i] == newdata[z])
+                {
+                    founded = true;
+                    break;
+                }
+            }
+            if(founded == 0)
+            {
+                data[x] = data[i];
+                x++;
+            }
+
+        }
+        realloc(data,sz- newsize );
+        realloc(data,capacity);
+        sz = sz- newsize;
+    }
+}
+
 
